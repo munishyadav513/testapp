@@ -24,4 +24,15 @@ jobs:
   dependsOn: job1
   steps:
   - script: echo hello world 2
-    displayName: 'run on line script'
+  - bash: echo ${Build.BuildNumber}
+  - bash: echo ${Build.BuildId}
+  - bash: echo ${System.DefaultWorkingDirectory}
+  - bash: echo ${Build.ArtifactStagingDirectory}
+  - bash: ls -R ${Build.ArtifactStagingDirectory}
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: '${System.DefaultWorkingDirectory}'
+      Contents: |
+        **/*.yaml
+        **/*.tf
+      TargetFolder: '${Build.ArtifactStagingDirectory}'
